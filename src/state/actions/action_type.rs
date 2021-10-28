@@ -1,11 +1,11 @@
-use std::str::FromStr;
 use serde::{Deserialize, Serialize};
+use std::str::FromStr;
 
 use super::action_payload::ActionPayload;
 
 use crate::{
     input::{action_argument::ActionArgument, input_error::InputError},
-    utils::general::string_to_bool
+    utils::general::string_to_bool,
 };
 
 /// The types of Actions that can be done to a [TodoList]
@@ -27,6 +27,7 @@ impl ActionType {
         match s {
             "add" => Ok(ActionType::Add),
             "clear" => Ok(ActionType::Clear),
+            "edit" => Ok(ActionType::Edit),
             "ls" => Ok(ActionType::List),
             "lss" => Ok(ActionType::ListType),
             "rm" => Ok(ActionType::Remove),
@@ -40,6 +41,7 @@ impl ActionType {
         match s {
             "Add" => Ok(ActionType::Add),
             "Clear" => Ok(ActionType::Clear),
+            "Edit" => Ok(ActionType::Edit),
             "List" => Ok(ActionType::List),
             "ListType" => Ok(ActionType::ListType),
             "Remove" => Ok(ActionType::Remove),
@@ -76,16 +78,18 @@ impl ActionType {
                 if existing.is_none() || editted.is_none() {
                     return Err(InputError::bad_arg_str("Edit must be provided two arguments, the existing todo to edit and the new text it should be changed to."));
                 }
-                
+
                 let ex_unw = existing.unwrap();
                 let ed_unw = editted.unwrap();
 
                 if ex_unw.is_empty() || ed_unw.is_empty() {
-                    return Err(InputError::bad_arg_str("Edit cannot be passed empty strings"));
+                    return Err(InputError::bad_arg_str(
+                        "Edit cannot be passed empty strings",
+                    ));
                 }
 
                 Ok(ActionPayload::Edit(ex_unw.clone(), ed_unw.clone()))
-            },
+            }
             ActionType::List => Ok(ActionPayload::List),
             ActionType::ListType => {
                 if let Some(lss_value_raw) = args.first() {
@@ -134,7 +138,10 @@ impl ActionType {
         match self {
             ActionType::Add => vec![ActionArgument::string("todo", 0)],
             ActionType::Clear => vec![],
-            ActionType::Edit => vec![ActionArgument::string("todo", 0)],
+            ActionType::Edit => vec![
+                ActionArgument::existing("todo", 0),
+                ActionArgument::string("new text", 1),
+            ],
             ActionType::List => vec![],
             ActionType::ListType => vec![ActionArgument::boolean("status", 0)],
             ActionType::Remove => vec![ActionArgument::existing("todo", 0)],
@@ -142,9 +149,7 @@ impl ActionType {
                 ActionArgument::existing("todo", 0),
                 ActionArgument::boolean("status", 1),
             ],
-            ActionType::Other => vec![
-                ActionArgument::string("input", 0)
-            ],
+            ActionType::Other => vec![ActionArgument::string("input", 0)],
         }
     }
 
@@ -178,7 +183,7 @@ impl ActionType {
         match self {
             ActionType::Add => 1,
             ActionType::Clear => 0,
-            ActionType::Edit => 1,
+            ActionType::Edit => 2,
             ActionType::List => 0,
             ActionType::ListType => 1,
             ActionType::Remove => 1,
@@ -195,6 +200,7 @@ impl ActionType {
         vec![
             ActionType::Add,
             ActionType::Clear,
+            ActionType::Edit,
             ActionType::List,
             ActionType::ListType,
             ActionType::Remove,

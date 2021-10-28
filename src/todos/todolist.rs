@@ -311,7 +311,13 @@ impl TodoList {
                     println!("Error during prompt: {:?}", err);
                 }
             },
-            ActionPayload::Edit(key) => {},
+            ActionPayload::Edit(existing, new_text) => {
+                if let Some(status) = self.map.remove(&existing) {
+                    self.map.insert(new_text.to_string(), status);
+                } else {
+                    return Err(CommandError::TodoNotFound);
+                }
+            },
             ActionPayload::List => {
                 if self.is_empty() {
                     println!("No todos in database, you're either very on top of things or slacking reallllllly bad.");
