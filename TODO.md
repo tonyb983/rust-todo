@@ -1,0 +1,12 @@
+- Add utility functions for file system interaction
+- Add back-ups for [db.txt](.\db.txt)
+- Create interface for saving and loading data
+- ~~Add sources for saving / loading other than plain text files~~
+- ~~Maybe add serialization with `serde` to ease the above point~~
+- Create transactional system so errors don't brick the whole system
+- Create service (app-wide ***interface*** type service, not daemon/winservice) for todo-list and todo-list entries
+- Investigate whether a daemon / winservice would have any benefit, it seems that the current message-pack serialization and deserialization work *pretty* quickly as-is
+- Clean up `state` mod, focusing on React/Redux style state management. Actions are already in place, need reducers?
+- Clean up crappy code in general
+- Add layered confiruation (either `config` or `figment`)
+- Add terminal colors for prettier output (`owo-colors`)

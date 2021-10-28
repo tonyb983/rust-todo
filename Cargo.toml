@@ -1,0 +1,39 @@
+[package]
+name = "todo"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+arbitrary = "1.0.2"
+assert2 = "0.3.6"
+assert_cmd = "2.0.2"
+bson = "2.0.1"
+chrono = "0.4.19"
+config = { version = "0.11", features = ["ini", "json", "toml", "yaml"] }
+dateparser = "0.1.6"
+dialoguer = { version = "0.9.0", features = ["fuzzy-select", "history"] }
+directories = "4.0.1"
+enum-iterator = "0.7.0"
+figment = { version = "0.10.6", features = ["env", "json", "yaml", "toml"] }
+flexbuffers = "2.0.0"
+itertools = "0.10.1"
+lazy_static = "1.4.0"
+mimalloc = { version = "0.1.26", default-features = false }
+mockall = "0.10.2"
+owo-colors = "3.0.1"
+proptest = "1.0.0"
+quanta = "0.9.3"
+quickcheck = "1.0.3"
+rand = "0.8.4"
+rmp = "0.8.10"
+rmp-serde = "0.15.5"
+serde = { version = "1.0.130", features = ["derive"] }
+serde_cbor = "0.11.2"
+serde_json = "1.0.68"
+static_assertions = "1.1.0"
+strum = { version = "0.22.0", features = ["derive"] }
+strum_macros = "0.22.0"
+uuid = { version = "0.8", features = ["serde", "v4"] }
+windows-service = "0.4.0"
